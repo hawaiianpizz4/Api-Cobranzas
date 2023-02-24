@@ -1,4 +1,7 @@
 <?php
+
+
+require_once("../config/conexion.php");
 class Refinanciamiento extends Conectar
 {
 
@@ -48,100 +51,88 @@ class Refinanciamiento extends Conectar
 
 
 
-    public function set_insertFormRefi(
-        $p_refi_usuario,
-        $p_refi_fecha,
-        $p_refi_operacion,
-        $p_refi_autorizacion,
-        $p_refi_autorizacion_original,
-        $p_refi_plazo,
-        $p_refi_valor_cuota,
-        $p_refi_pago_gastos_admin,
-        $p_refi_total_reest,
-        $p_refi_total_pagar,
-        $p_cliente_cedula,
-        $p_cliente_nombres,
-        $p_cliente_nacionalidad,
-        $p_cliente_ciudad_nacimiento,
-        $p_cliente_fecha_nacimiento,
-        $p_cliente_sexo,
-        $p_cliente_nivel_educativo,
-        $p_cliente_profesion,
-        $p_cliente_estado_civil,
-        $p_cliente_numero_dependientes,
-        $p_dir_direccion_exacta,
-        $p_dir_provincia,
-        $p_dir_canton_ciudad,
-        $p_dir_parroquia,
-        $p_dir_direccion,
-        $p_dir_calle_transversal,
-        $p_dir_numero,
-        $p_dir_latitud,
-        $p_dir_longitud,
-        $p_dir_referencia,
-        $p_dir_tipo_vivienda,
-        $p_dir_tiempo,
-        $p_dir_telf_1,
-        $p_dir_telf_2,
-        $p_dir_email,
-        $p_dir_nombre_arrendador,
-        $p_dir_telf_arrendador,
-        $p_conyuge_cedula,
-        $p_conyuge_nombres,
-        $p_conyuge_email,
-        $p_conyuge_telf_1,
-        $p_conyuge_telf_2,
-        $p_conyuge_tipo_actividad,
-        $p_conyuge_nombre_empresa,
-        $p_conyuge_actividad_empresa,
-        $p_conyuge_cargo,
-        $p_conyuge_telefono_empresa,
-        $p_conyuge_ingresos_mensuales,
-        $p_ref1_nombres,
-        $p_ref1_parentesco,
-        $p_ref1_telf_1,
-        $p_ref1_telf_2,
-        $p_ref2_nombres,
-        $p_ref2_parentesco,
-        $p_ref2_telf_1,
-        $p_ref2_telf_2,
-        $p_trabajo_tipo_actividad,
-        $p_trabajo_ruc,
-        $p_trabajo_nombre,
-        $p_trabajo_provincia,
-        $p_trabajo_canton,
-        $p_trabajo_parroquia,
-        $p_trabajo_barrio,
-        $p_trabajo_direccion,
-        $p_trabajo_numero,
-        $p_trabajo_calle_transversal,
-        $p_trabajo_ref_ubicacion,
-        $p_trabajo_telefono,
-        $p_trabajo_antiguedad,
-        $p_imagen_files
-    )
+    public function set_insertFormRefi($jsonBody)
     {
-        // print_r($p_imagen_files);
 
-        // $ruta_imagenes = "//171.23.12.43/_shared/";
-        // $ruta_imagenes = "//210.17.1.38/htdocs/ApiVerificaciones/App_Cobranzas_img/";
-
-        // $ruta_imagenes = "//210.17.1.38/htdocs/VerificacionesFisicas/Fotos_APP_Cobranzas/Refinanciamiento/" . $p_cliente_nombres . "/";
-
-
+        $p_refi_usuario = filter_var($jsonBody->refi_usuario, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_fecha = filter_var($jsonBody->refi_fecha, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_operacion = filter_var($jsonBody->refi_operacion, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_autorizacion = filter_var($jsonBody->refi_autorizacion, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_autorizacion_original = filter_var($jsonBody->refi_autorizacion_original, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_plazo = filter_var($jsonBody->refi_plazo, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_valor_cuota = filter_var($jsonBody->refi_valor_cuota, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_pago_gastos_admin = filter_var($jsonBody->refi_pago_gastos_admin, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_total_reest = filter_var($jsonBody->refi_total_reest, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_refi_total_pagar = filter_var($jsonBody->refi_total_pagar, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_cedula = filter_var($jsonBody->cliente_cedula, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_nombres = filter_var($jsonBody->cliente_nombres, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_nacionalidad = filter_var($jsonBody->cliente_nacionalidad, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_ciudad_nacimiento = filter_var($jsonBody->cliente_ciudad_nacimiento, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_fecha_nacimiento = filter_var($jsonBody->cliente_fecha_nacimiento, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_sexo = filter_var($jsonBody->cliente_sexo, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_nivel_educativo = filter_var($jsonBody->cliente_nivel_educativo, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_profesion = filter_var($jsonBody->cliente_profesion, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_estado_civil = filter_var($jsonBody->cliente_estado_civil, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_cliente_numero_dependientes = filter_var($jsonBody->cliente_numero_dependientes, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_direccion_exacta = filter_var($jsonBody->dir_direccion_exacta, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_provincia = filter_var($jsonBody->dir_provincia, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_canton_ciudad = filter_var($jsonBody->dir_canton_ciudad, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_parroquia = filter_var($jsonBody->dir_parroquia, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_direccion = filter_var($jsonBody->dir_direccion, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_calle_transversal = filter_var($jsonBody->dir_calle_transversal, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_numero = filter_var($jsonBody->dir_numero, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_latitud = filter_var($jsonBody->dir_latitud, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_longitud = filter_var($jsonBody->dir_longitud, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_referencia = filter_var($jsonBody->dir_referencia, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_tipo_vivienda = filter_var($jsonBody->dir_tipo_vivienda, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_tiempo = filter_var($jsonBody->dir_tiempo, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_telf_1 = filter_var($jsonBody->dir_telf_1, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_telf_2 = filter_var($jsonBody->dir_telf_2, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_email = filter_var($jsonBody->dir_email, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_nombre_arrendador = filter_var($jsonBody->dir_nombre_arrendador, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_dir_telf_arrendador = filter_var($jsonBody->dir_telf_arrendador, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_cedula = filter_var($jsonBody->conyuge_cedula, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_nombres = filter_var($jsonBody->conyuge_nombres, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_email = filter_var($jsonBody->conyuge_email, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_telf_1 = filter_var($jsonBody->conyuge_telf_1, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_telf_2 = filter_var($jsonBody->conyuge_telf_2, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_tipo_actividad = filter_var($jsonBody->conyuge_tipo_actividad, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_nombre_empresa = filter_var($jsonBody->conyuge_nombre_empresa, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_actividad_empresa = filter_var($jsonBody->conyuge_actividad_empresa, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_cargo = filter_var($jsonBody->conyuge_cargo, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_telefono_empresa = filter_var($jsonBody->conyuge_telefono_empresa, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_conyuge_ingresos_mensuales = filter_var($jsonBody->conyuge_ingresos_mensuales, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_ref1_nombres = filter_var($jsonBody->ref1_nombres, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_ref1_parentesco = filter_var($jsonBody->ref1_parentesco, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_ref1_telf_1 = filter_var($jsonBody->ref1_telf_1, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_ref1_telf_2 = filter_var($jsonBody->ref1_telf_2, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_ref2_nombres = filter_var($jsonBody->ref2_nombres, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_ref2_parentesco = filter_var($jsonBody->ref2_parentesco, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_ref2_telf_1 = filter_var($jsonBody->ref2_telf_1, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_ref2_telf_2 = filter_var($jsonBody->ref2_telf_2, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_tipo_actividad = filter_var($jsonBody->trabajo_tipo_actividad, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_ruc = filter_var($jsonBody->trabajo_ruc, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_nombre = filter_var($jsonBody->trabajo_nombre, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_provincia = filter_var($jsonBody->trabajo_provincia, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_canton = filter_var($jsonBody->trabajo_canton, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_parroquia = filter_var($jsonBody->trabajo_parroquia, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_barrio = filter_var($jsonBody->trabajo_barrio, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_direccion = filter_var($jsonBody->trabajo_direccion, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_numero = filter_var($jsonBody->trabajo_numero, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_calle_transversal = filter_var($jsonBody->trabajo_calle_transversal, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_ref_ubicacion = filter_var($jsonBody->trabajo_ref_ubicacion, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_telefono = filter_var($jsonBody->trabajo_telefono, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_trabajo_antiguedad = filter_var($jsonBody->trabajo_antiguedad, FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW);
+        $p_imagen_files = filter_var_array($jsonBody->imagen_files);
 
 
         $ruta_imagenes = "\\\\210.17.1.38\\htdocs\\VerificacionesFisicas\\APP_Cobranzas_Fotos\\Refinanciamiento\\" . $p_cliente_nombres . "\\";
         $ruta_web_imagenes = "http://200.7.249.21:90/VerificacionesFisicas/APP_Cobranzas_Fotos/Refinanciamiento/" . $p_cliente_nombres . "/";
 
-
-
-
         $p_imagen_paths = $this->grabarImagenesEnServer($p_imagen_files, $p_cliente_cedula, $p_refi_operacion, $ruta_imagenes, $ruta_web_imagenes);
 
         $conectar = parent::conexion();
         parent::set_names();
-
 
         $sql = "CALL proc_insert_actualizacion_datos_refinanciamiento_app (
             ?,?,?,?,?,?,?,?,?,?,
@@ -231,7 +222,6 @@ class Refinanciamiento extends Conectar
         $sql->execute();
         return $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
     public function ConcatPaths($p_imagen_paths, $ruta_imagenes, $ruta_web_imagenes)
     {
