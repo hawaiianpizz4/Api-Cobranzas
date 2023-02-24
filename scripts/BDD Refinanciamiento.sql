@@ -305,3 +305,13 @@ BEGIN
 
     select * from actualizacion_datos_refinanciamiento_app_tb where id = LAST_INSERT_ID();
 END;
+
+
+CREATE PROCEDURE get_historial_usuario(p_usuario_nombre varchar(100))
+BEGIN
+  SELECT * FROM actualizacion_datos_refinanciamiento_app_tb WHERE refi_usuario = p_usuario_nombre;
+END
+
+
+
+

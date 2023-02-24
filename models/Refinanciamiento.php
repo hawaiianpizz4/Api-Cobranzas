@@ -5,6 +5,17 @@ require_once("../config/conexion.php");
 class Refinanciamiento extends Conectar
 {
 
+    public function getHistorialUsuario($nombre)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT * FROM actualizacion_datos_refinanciamiento_app_tb WHERE refi_usuario = ?";
+        $sql = $conectar->prepare($sql);
+        $sql->bindValue(1, $nombre);
+        $sql->execute();
+        return $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function get_info_cliente($id)
     {
 
@@ -36,7 +47,7 @@ class Refinanciamiento extends Conectar
 
         curl_close($curl);
 
-        return $response;
+        return json_decode($response);
     }
 
     public function get_info_clientes()

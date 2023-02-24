@@ -3,7 +3,7 @@ header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
 header('Content-Type: application/json');
-require_once("../config/conexion.php");
+require_once("../config/conexionGestion.php");
 require_once("../models/Categoria.php");
 $categoria = new Categoria();
 

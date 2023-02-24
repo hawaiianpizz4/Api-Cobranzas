@@ -2,6 +2,172 @@
 require_once("../config/conexion.php");
 class Verificacion extends Conectar
 {
+
+    public function get_user()
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        // $sql="EXEC [dbo].[sp_pagosrecover] '$cedula'";
+        $sql = "SELECT * FROM ventaspdv_verificaciones.verificaciones_usuarios_tb WHERE estado=0 AND verificado=0";
+        $sql = $conectar->prepare($sql);
+        $sql->execute();
+        return $resultado = $sql->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function obtenerVerificaciones($cedula)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        // $sql="EXEC [dbo].[sp_pagosrecover] '$cedula'";
+        $sql = "SELECT * FROM ventaspdv_verificaciones.checklistverificadomicilio_tb WHERE cedulaCliente='$cedula'";
+        $sql = $conectar->prepare($sql);
+        $sql->execute();
+        return $resultado = $sql->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function insertarVerificaciones(
+        $cedulaCliente,
+        $nombreCliente,
+        $codigoVerificacion,
+        $direccionDomiciliaria,
+        $tipoVivienda,
+        $personaQuienRealizaLaVerificacion,
+        $residenciaMinimaTresMeses,
+        $localTerrenoPropio,
+        $localTerrenoArrendado,
+        $planillaServicioBasico,
+        $planillaServicioBasicoImagen,
+        $seguridadPuertasVentanas,
+        $muebleriaBasica,
+        $materialCasa,
+        $periodicidadActividadesLaborales,
+        $confirmacionInfoVecinos,
+        $nombreInfoVecino,
+        $celularInfoVecino,
+        $estabilidadLaboraSeisMesesImagen,
+        $facturasProveedoresUltimosTresMesesImagen,
+        $fachadaDelNegocioImagen,
+        $interiorDelNegocioImagen,
+        $clienteDentroDelNegocioImagen,
+        $clienteFueraDelNegocioImagen,
+        $tituloPropiedaGaranteOCodeudorImagen,
+        $impuestoPredialImagen,
+        $respaldoIngresosImagen,
+        $certificadoLaboralImagen,
+        $interiorDomicilioImagen,
+        $latitud,
+        $longitud,
+        $coordenadas,
+        $vf_nombre_tienda,
+        $nombreGestor,
+        $fechaverificacion
+    )
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        // $sql="EXEC [dbo].[sp_pagosrecover] '$cedula'";
+        $sql = "INSERT INTO checklistverificadomicilio_tb (cedulaCliente, nombreCliente, codigoVerificacion, direccionDomiciliaria, 
+            tipoVivienda, personaQuienRealizaLaVerificacion, residenciaMinimaTresMeses, localTerrenoPropio, 
+            localTerrenoArrendado, planillaServicioBasico, planillaServicioBasicoImagen, seguridadPuertasVentanas, 
+            muebleriaBasica, materialCasa, periodicidadActividadesLaborales, confirmacionInfoVecinos, nombreInfoVecino, 
+            celularInfoVecino, estabilidadLaboraSeisMesesImagen, facturasProveedoresUltimosTresMesesImagen, 
+            fachadaDelNegocioImagen, interiorDelNegocioImagen, clienteDentroDelNegocioImagen, clienteFueraDelNegocioImagen, 
+            tituloPropiedaGaranteOCodeudorImagen, impuestoPredialImagen, respaldoIngresosImagen, certificadoLaboralImagen, 
+            interiorDomicilioImagen, 
+            latitud, longitud, coordenadas, vf_nombre_tienda, nombreGestor, fechaverificacion)
+            VALUES ('$cedulaCliente', '$nombreCliente', '$codigoVerificacion', '$direccionDomiciliaria',
+            '$tipoVivienda', '$personaQuienRealizaLaVerificacion', '$residenciaMinimaTresMeses', '$localTerrenoPropio', '$localTerrenoArrendado',
+            '$planillaServicioBasico', '$planillaServicioBasicoImagen', '$seguridadPuertasVentanas', '$muebleriaBasica', '$materialCasa', 
+            '$periodicidadActividadesLaborales', '$confirmacionInfoVecinos', '$nombreInfoVecino', '$celularInfoVecino', '$estabilidadLaboraSeisMesesImagen', 
+            '$facturasProveedoresUltimosTresMesesImagen', '$fachadaDelNegocioImagen', '$interiorDelNegocioImagen', '$clienteDentroDelNegocioImagen',
+            '$clienteFueraDelNegocioImagen', '$tituloPropiedaGaranteOCodeudorImagen', '$impuestoPredialImagen', '$respaldoIngresosImagen',
+            '$certificadoLaboralImagen', '$interiorDomicilioImagen', '$latitud', '$longitud', '$coordenadas', '$vf_nombre_tienda',
+            '$nombreGestor', '$fechaverificacion');";
+        $sql = $conectar->prepare($sql);
+        $sql->execute();
+        return $resultado = $sql->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function reservarVerificacionUser($cedula, $nombreGestor)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        // $sql="EXEC [dbo].[sp_pagosrecover] '$cedula'"; 
+        // Consultas  
+        $sql0 = "SELECT * FROM ventaspdv_verificaciones.verificaciones_usuarios_tb WHERE vf_cedula_cliente='$cedula'";
+        $sql = "UPDATE ventaspdv_verificaciones.verificaciones_usuarios_tb SET estado='1'
+            WHERE vf_cedula_cliente='$cedula'";
+        $sql2 = "UPDATE ventaspdv_verificaciones.verificaciones_fisicas SET vf_gestor='$nombreGestor'
+            WHERE vf_cedula='$cedula'";
+
+        $sql0 = $conectar->prepare($sql0);
+        $sql0->execute();
+        // Obteniendo campos de tabla verificaciones_usuarios_tb
+        $resultado = $sql0->fetchAll(PDO::FETCH_OBJ);
+        $vf_usuario = $resultado[0]->vf_nombre_cliente;
+        $vf_cedula = $resultado[0]->vf_cedula_cliente;
+        $latitud = $resultado[0]->latitud;
+        $longitud = $resultado[0]->longitud;
+
+
+        // Cadena codigo 
+        $DesdeLetra = "a";
+        $HastaLetra = "z";
+        $DesdeNumero = 1;
+        $HastaNumero = 10000;
+        $letraAleatoria = chr(rand(ord($DesdeLetra), ord($HastaLetra)));
+        $numeroAleatorio = rand($DesdeNumero, $HastaNumero);
+        $vf_codigo_verificacion = $letraAleatoria . $numeroAleatorio;
+
+        // Sql creación 
+        $sqlIntermedioO = ("Call ventaspdv_verificaciones.proc_insertar_reserva_movil('$vf_usuario','$vf_cedula','$vf_codigo_verificacion','$latitud', '$longitud',  POINT($latitud,$longitud), ADDTIME(now(), '00:11:00'))");
+        // $sqlIntermedioO="INSERT INTO ventaspdv_verificaciones.verificaciones_fisicas (vf_usuario, vf_cedula, 
+        // latitud, longitud)
+        // VALUES ('$vf_usuario', '$vf_cedula', '$latitud', '$longitud')";
+
+        $sqlIntermedioO = $conectar->prepare($sqlIntermedioO);
+        $sqlIntermedioO->execute();
+
+        $sql = $conectar->prepare($sql);
+        $sql2 = $conectar->prepare($sql2);
+        $sql->execute();
+        $sql2->execute();
+    }
+
+
+    public function checkUserForGestor($nombreGestor)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        // $sql="EXEC [dbo].[sp_pagosrecover] '$cedula'";   
+        $sql = "SELECT vf_nombre_tienda, vf_nombre_vendedor, vf_nombre_cliente, vf_cedula_cliente, vf_lugar_a_verificar,
+            dndlD_ciudad_residencia, dndlD_sector_de_domicilio, dndlD_direccion_domiciliaria, dndlD_referencia_domiciliaria,
+            dndlN_nombre_empresa_trabaja, dndlN_actividad_laboral, dndlN_direccion_trabajo, dndlN_telefonofijo, 
+            dndlN_telefonocelular, b.vf_gestor  from ventaspdv_verificaciones.verificaciones_usuarios_tb a
+            inner join ventaspdv_verificaciones.verificaciones_fisicas b on 
+            a.vf_cedula_cliente =b.vf_cedula  
+            WHERE estado ='1' and verificado ='0' and b.vf_gestor='$nombreGestor'  group by  a.vf_cedula_cliente";
+        $sql = $conectar->prepare($sql);
+        $sql->execute();
+        return $resultado = $sql->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function checkUserForGestorPrueba()
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        // $sql="EXEC [dbo].[sp_pagosrecover] '$cedula'";   
+        $sql = "SELECT vf_nombre_tienda, vf_nombre_vendedor, vf_nombre_cliente, vf_cedula_cliente, vf_lugar_a_verificar,
+            dndlD_ciudad_residencia, dndlD_sector_de_domicilio, dndlD_direccion_domiciliaria, dndlD_referencia_domiciliaria,
+            dndlN_nombre_empresa_trabaja, dndlN_actividad_laboral, dndlN_direccion_trabajo, dndlN_telefonofijo, 
+            dndlN_telefonocelular, b.vf_gestor  from ventaspdv_verificaciones.verificaciones_usuarios_tb a
+            inner join ventaspdv_verificaciones.verificaciones_fisicas b on 
+            a.vf_cedula_cliente =b.vf_cedula and DATE_FORMAT(a.fechaIngreso,'%Y-%m-%d')  = DATE_FORMAT(b.fechaIngreso,'%Y-%m-%d')  
+            WHERE estado ='1' and verificado ='0' and b.vf_gestor='MRAMIREZ'  group by  a.vf_cedula_cliente";
+        $sql = $conectar->prepare($sql);
+        $sql->execute();
+        return $resultado = $sql->fetchAll(PDO::FETCH_OBJ);
+    }
     public function set_insertFormVerificacion($body)
     {
 

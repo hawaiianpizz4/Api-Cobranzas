@@ -28,6 +28,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'getClientes':
                 $returnedData = $refinanciamiento->get_info_clientes();
                 break;
+            case 'getHistosrial':
+                $returnedData = $refinanciamiento->getHistorialUsuario($_GET["nombre"]);
+                break;
             default:
                 http_response_code(400);
                 echo $msgBadRequest;
@@ -40,6 +43,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             http_response_code(400);
             echo "REGISTRO NO INGRESADO";
         }
+        break;
     case 'POST':
         switch ($_GET["opcion"]) {
             case 'postDatosRefi':
