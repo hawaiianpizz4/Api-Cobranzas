@@ -145,8 +145,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
             case 'send':
-                var_dump("Hola");
-                die();
                 // Codigo
                 $DesdeLetra = "a";
                 $HastaLetra = "z";
@@ -164,7 +162,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
                 $url = "https://api2.massend.com/enviosms";
 
-                //Execute 
                 $curl = curl_init($url);
 
                 curl_setopt($curl, CURLOPT_URL, $url);
