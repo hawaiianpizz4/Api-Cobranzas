@@ -1,13 +1,21 @@
 <?php
 require_once("../config/conexion.php");
+require_once("../utils/dotenv.php");
+require_once("../utils/Utils.php");
+
+(new DotEnv('../.env'))->load();
+
+$utils = new Utils();
+$proceso = 'Verificacion';
+
 class Verificacion extends Conectar
 {
 
-    public function get_user()
+    public function getUsersParaReservar()
     {
         $conectar = parent::conexion();
         parent::set_names();
-        $sql = "SELECT * FROM ventaspdv_verificaciones.verificaciones_usuarios_tb WHERE estado=0 AND verificado=0";
+        $sql = "SELECT * FROM ventaspdv_verificaciones.verificaciones_usuarios_tb_pruebas WHERE estado=0 AND verificado=0";
         $sql = $conectar->prepare($sql);
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_OBJ);
@@ -22,6 +30,45 @@ class Verificacion extends Conectar
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_OBJ);
     }
+
+
+    public function enviarSMS($number)
+    {
+        global $utils;
+
+        $code = $utils->randomSmsCode();
+        $number = "593" . substr($number, 1);
+        $number = "59398439756";
+
+        $urlParams = "username=icessa-api&mensajeid=32743&telefono=$number&tipo=1&datos=$code";
+        $curl = curl_init();
+        curl_setopt_array(
+            $curl,
+            array(
+                CURLOPT_URL => getenv('SMS_URL'),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => $urlParams,
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer ' . getenv('SMS_URL_AUTH'),
+                    'Content-Type: application/x-www-form-urlencoded'
+                ),
+            )
+        );
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        echo $status;
+
+        return json_decode($response);
+    }
+
 
     public function insertarVerificaciones(
         $cedulaCliente,
@@ -89,7 +136,7 @@ class Verificacion extends Conectar
     {
         $conectar = parent::conexion();
         parent::set_names();
-        $sql = "UPDATE ventaspdv_verificaciones.verificaciones_usuarios_tb SET estado='1', nombre_gestor='$nombreGestor'
+        $sql = "UPDATE ventaspdv_verificaciones.verificaciones_usuarios_tb_pruebas SET estado='1', nombre_gestor='$nombreGestor'
             WHERE vf_cedula_cliente='$cedula'";
 
         $sql = $conectar->prepare($sql);
@@ -102,6 +149,7 @@ class Verificacion extends Conectar
         $conectar = parent::conexion();
         parent::set_names();
         $sql = "Select * from ventaspdv_verificaciones.checklist_verifica_domicilio_app_tb where nombreGestor = '$nombreGestor'";
+
 
         $sql = $conectar->prepare($sql);
         $sql->execute();

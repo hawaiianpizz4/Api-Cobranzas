@@ -15,6 +15,7 @@ class Conectar
 
         try {
             $conectar = $this->dbh = new PDO($databaseDns, $databaseUser, $databasePass);
+            $this->set_names();
             return $conectar;
         } catch (Exception $e) {
             echo "!Error de conexión ! : " . $e->getMessage();

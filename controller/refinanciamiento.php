@@ -5,67 +5,77 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 header('Content-Type: application/json');
 
 require_once("../models/Refinanciamiento.php");
+require_once("../utils/Utils.php");
 
 $refinanciamiento = new Refinanciamiento();
+$utils = new Utils();
 
 $msgError = "REGISTRO NO INGRESADO";
-$msgBadRequest = "ERROR EN REQUEST";
+$msgBadRequest = "BAD REQUEST";
 
 $jsonBody = json_decode(file_get_contents("php://input"));
 
 if (!isset($_GET['opcion'])) {
-    http_response_code(400);
-    echo $msgBadRequest;
+    $utils->returnMessage(400, $msgBadRequest, null);
     return;
 }
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        switch ($_GET["opcion"]) {
-            case 'getClientesId':
-                $returnedData = $refinanciamiento->get_info_cliente($_GET["id"]);
-                break;
-            case 'getClientes':
-                $returnedData = $refinanciamiento->get_info_clientes();
-                break;
-            case 'getHistosrial':
-                $returnedData = $refinanciamiento->getHistorialUsuario($_GET["nombre"]);
-                break;
-            default:
-                http_response_code(400);
-                echo $msgBadRequest;
-                return;
-        }
-        if (!empty($returnedData)) {
-            http_response_code(200);
-            echo json_encode($returnedData, JSON_PRETTY_PRINT);
-        } else {
-            http_response_code(400);
-            echo "REGISTRO NO INGRESADO";
-        }
+        getHandler();
         break;
     case 'POST':
-        switch ($_GET["opcion"]) {
-            case 'postDatosRefi':
-                if ($jsonBody) {
-                    $returnedData = $refinanciamiento->set_insertFormRefi($jsonBody);
-                } else {
-                    echo "Error, no hay cuerpo de datos";
-                }
-                break;
-            default:
-                http_response_code(400);
-                echo $msgBadRequest;
-                return;
-        }
+        postHandler();
+        break;
+    default:
+        $utils->returnMessage(400, $msgBadRequest, null);
+        return;
+}
 
-        if (!empty($returnedData)) {
-            http_response_code(200);
-            echo json_encode($returnedData, JSON_PRETTY_PRINT);
-        } else {
-            http_response_code(400);
-            echo $msgError;
-        }
+function postHandler()
+{
+    global $refinanciamiento, $msgBadRequest, $jsonBody, $msgError, $utils;
+
+    if ($_GET["opcion"] == 'postDatosRefi') {
+        $returnedData = postDatosRefi();
+    } else {
+        $utils->returnMessage(400, $msgBadRequest, null);
+        return;
+    }
+    empty($returnedData) ? $utils->returnMessage(400, "ERROR", $msgError) : $utils->returnMessage(200, "OK", $returnedData);
+
+}
+
+
+function getHandler()
+{
+    global $refinanciamiento, $msgBadRequest, $msgError, $utils;
+
+    switch ($_GET["opcion"]) {
+        case 'getClientesId':
+            $returnedData = $refinanciamiento->getDatosMinaCliente($_GET["id"]);
+            break;
+        case 'getClientes':
+            $returnedData = $refinanciamiento->getDatosMinaClientes();
+            break;
+        case 'getHistorial':
+            $returnedData = $refinanciamiento->getHistorialUsuario($_GET["nombre"]);
+            break;
+        default:
+            $utils->returnMessage(400, $msgBadRequest, null);
+            return;
+    }
+    empty($returnedData) ? $utils->returnMessage(400, "ERROR", $msgError) : $utils->returnMessage(200, "OK", $returnedData);
+}
+
+function postDatosRefi()
+{
+    global $jsonBody, $refinanciamiento, $utils, $msgBadRequest;
+    if ($jsonBody) {
+        return $refinanciamiento->insertRefinanciamiento($jsonBody);
+    } else {
+        $utils->returnMessage(400, $msgBadRequest, "NO HAY CUERPO DE DATOS");
+    }
 }
 
 ?>
