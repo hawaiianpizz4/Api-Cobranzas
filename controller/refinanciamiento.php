@@ -43,9 +43,7 @@ function postHandler()
         return;
     }
     empty($returnedData) ? $utils->returnMessage(400, "ERROR", $msgError) : $utils->returnMessage(200, "OK", $returnedData);
-
 }
-
 
 function getHandler()
 {
@@ -77,5 +75,4 @@ function postDatosRefi()
         $utils->returnMessage(400, $msgBadRequest, "NO HAY CUERPO DE DATOS");
     }
 }
-
 ?>

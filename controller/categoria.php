@@ -8,7 +8,7 @@ require_once("../models/Categoria.php");
 $categoria = new Categoria();
 
 $body = json_decode(file_get_contents("php://input"), true);
-http: //localhost/API_Cobranzas/controller/categoria.php?op=user&nombre=AARISMENDI
+
 switch ($_GET["op"]) {
     case 'user':
         $datos = $categoria->get_informacion_supervisores($_GET["nombre"]);

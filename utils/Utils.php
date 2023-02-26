@@ -1,12 +1,10 @@
 <?php
 
-
 class Utils
 {
-    function returnMessage($code, $status, $returnedData)
+    public function returnMessage($code, $status, $returnedData)
     {
         http_response_code($code);
-
         if ($code == 200) {
             echo json_encode($returnedData, JSON_PRETTY_PRINT);
         } else {
@@ -14,9 +12,7 @@ class Utils
         }
     }
 
-
-
-    function ConcatPaths($p_imagen_paths, $ruta_imagenes, $ruta_web_imagenes)
+    private function ConcatPaths($p_imagen_paths, $ruta_imagenes, $ruta_web_imagenes)
     {
         $p_imagen_paths_concat = '';
         foreach ($p_imagen_paths as $path) {
@@ -25,11 +21,9 @@ class Utils
             $path = str_replace("\\", '/', $path);
             $p_imagen_paths_concat = $p_imagen_paths_concat . $path . ';';
         }
-
         return $p_imagen_paths_concat;
-
     }
-    function getGUID()
+    private function getGUID()
     {
         if (function_exists('com_create_guid')) {
             return com_create_guid();
@@ -48,8 +42,7 @@ class Utils
         }
     }
 
-
-    function grabarImagenesEnServer($p_imagesArray, $imageName, $ruta_imagenes, $ruta_web_imagenes)
+    public function grabarImagenesEnServer($p_imagesArray, $imageName, $ruta_imagenes, $ruta_web_imagenes)
     {
         $imageGUID = $this->getGUID();
         $rutas = array();
@@ -60,64 +53,59 @@ class Utils
 
         $i = 1;
         foreach ($p_imagesArray as $blob) {
+
             $filename = $this->buildPath($ruta_imagenes, "$imageName - $imageGUID - $i.png");
             file_put_contents($filename, base64_decode($blob));
-            // array_push($rutas, str_replace('/', '\\', $filename));
             array_push($rutas, $filename);
             $i++;
         }
 
         $concatPaths = $this->ConcatPaths($rutas, $ruta_imagenes, $ruta_web_imagenes);
-
         return substr($concatPaths, 0, -1);
         ;
     }
 
-    function filterEntries($jsonBody)
+    public function filterEntries($jsonBody)
     {
         $filters = [FILTER_SANITIZE_STRING, FILTER_FLAG_ENCODE_LOW];
         $dbParams = [];
         foreach ($jsonBody as $key => $value) {
-            if (strpos($key, "imagen") === false) {
+            if (strpos(strtolower($key), 'imagen') === false) {
                 $dbParams[$key] = filter_var($value, ...$filters);
             } else {
                 $dbParams[$key] = $value;
-
             }
         }
         return $dbParams;
     }
 
-    function exportImagesFromParams($dbParams, $imageName, $proceso, $subFolder)
+    public function exportImagesFromParams($dbParams, $imageName, $proceso, $subFolder)
     {
 
         $ruta_imagenes = $this->buildPath(getenv('RUTA_IMAGENES'), $proceso, $subFolder);
         $ruta_web_imagenes = implode('/', [getenv('RUTA_WEB_IMAGENES'), $proceso, $subFolder]);
 
         foreach ($dbParams as $key => $value) {
-            if (strpos($key, 'imagen') !== false) {
-                $dbParams[$key] = $this->grabarImagenesEnServer($dbParams[$key], $imageName, $ruta_imagenes, $ruta_web_imagenes);
+            if (strpos(strtolower($key), 'imagen') !== false) {
+
+                $dbParams[$key] = $this->grabarImagenesEnServer($dbParams[$key], $imageName . ' - ' . $key, $ruta_imagenes, $ruta_web_imagenes);
             }
         }
-
         return $dbParams;
-
     }
 
 
-    function buildPath(...$parts)
+    public function buildPath(...$parts)
     {
         return implode(DIRECTORY_SEPARATOR, $parts);
     }
 
-    function randomSmsCode()
+    public function randomSmsCode()
     {
-        $code = chr(rand(65, 90)); // random uppercase letter
-        $code .= rand(10000, 99999); // random 5-digit number
+        $code = chr(rand(65, 90));
+        $code .= rand(1000, 9999);
         return $code;
     }
-
 }
-
 
 ?>
