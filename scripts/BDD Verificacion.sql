@@ -58,7 +58,7 @@ CREATE PROCEDURE proc_insert_checklist_verifica_domicilio_app (
   IN p_muebleriaBasica VARCHAR(100),
   IN p_materialCasa VARCHAR(100),
   IN p_periodicidadActividadesLaborales VARCHAR(100),
-  IN p_confirmacionInfoVecinos VARCHAR(100),
+IN p_confirmacionInfoVecinos VARCHAR(100),
   IN p_nombreInfoVecino VARCHAR(100),
   IN p_celularInfoVecino VARCHAR(100),
   IN p_estabilidadLaboraSeisMesesImagen VARCHAR(250),

@@ -10,11 +10,10 @@ $proceso = 'Verificacion';
 
 class Verificacion extends Conectar
 {
-
     public function getClientesParaReservar()
     {
         $conectar = parent::conexion();
-        parent::set_names();
+
         $sql = "SELECT * FROM verificaciones_usuarios_tb_pruebas WHERE estado=0 AND verificado=0";
         $sql = $conectar->prepare($sql);
         $sql->execute();
@@ -34,8 +33,8 @@ class Verificacion extends Conectar
     public function getClientesVerificados($nombreGestor)
     {
         $conectar = parent::conexion();
-        // $sql = "SELECT * FROM checklist_verifica_domicilio_app_tb WHERE nombreGestor = '$nombreGestor'";
-        $sql = "SELECT * FROM checklist_verifica_domicilio_app_tb";
+        $sql = "SELECT * FROM checklist_verifica_domicilio_app_tb WHERE nombreGestor = '$nombreGestor'";
+        // $sql = "SELECT * FROM checklist_verifica_domicilio_app_tb";
         $sql = $conectar->prepare($sql);
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_OBJ);
@@ -44,7 +43,6 @@ class Verificacion extends Conectar
     public function getClienteVerificadoId($cedula)
     {
         $conectar = parent::conexion();
-        parent::set_names();
         $sql = "SELECT * FROM checklistverificadomicilio_tb WHERE cedulaCliente='$cedula'";
         $sql = $conectar->prepare($sql);
         $sql->execute();
@@ -62,7 +60,6 @@ class Verificacion extends Conectar
         $sql = "SELECT ROW_COUNT()";
         $sql = $conectar->prepare($sql);
         $sql->execute();
-
 
         return $sql->fetchAll(PDO::FETCH_OBJ);
     }
@@ -82,11 +79,11 @@ class Verificacion extends Conectar
             $jsonBody->nombreCliente
         );
 
+
+
         $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET verificado='1' WHERE vf_cedula_cliente= $jsonBody->cedulaCliente";
         $sql = $conectar->prepare($sql);
         $sql->execute();
-
-
 
         $sql = "CALL proc_insert_checklist_verifica_domicilio_app (
             ?,?,?,?,?,?,?,?,?,?,
@@ -106,17 +103,19 @@ class Verificacion extends Conectar
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     public function enviarSMS($number)
     {
         global $utils;
 
         $code = $utils->randomSmsCode();
         $number = "593" . substr($number, 1);
-        $number = "59398439756";
+        // $number = "593969838598";
+
+        // echo $number;
+        return;
 
         $urlParams = array(
-            'username' => getenv('SMS_URL'),
+            'username' => getenv('SMS_USERNAME'),
             'mensajeid' => getenv('SMS_MSGID'),
             'telefono' => $number,
             'tipo' => getenv('SMS_TIPO'),

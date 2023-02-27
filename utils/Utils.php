@@ -23,6 +23,7 @@ class Utils
         }
         return $p_imagen_paths_concat;
     }
+
     private function getGUID()
     {
         if (function_exists('com_create_guid')) {
@@ -62,7 +63,6 @@ class Utils
 
         $concatPaths = $this->ConcatPaths($rutas, $ruta_imagenes, $ruta_web_imagenes);
         return substr($concatPaths, 0, -1);
-        ;
     }
 
     public function filterEntries($jsonBody)
@@ -103,7 +103,7 @@ class Utils
     public function randomSmsCode()
     {
         $code = chr(rand(65, 90));
-        $code .= rand(1000, 9999);
+        $code .= rand(10000, 99999);
         return $code;
     }
 }

@@ -10,8 +10,6 @@ $utils = new Utils();
 $proceso = 'Refinanciamiento';
 class Refinanciamiento extends Conectar
 {
-
-
     public function getHistorialUsuario($nombre)
     {
         $conectar = parent::conexion();
@@ -51,14 +49,6 @@ class Refinanciamiento extends Conectar
         return json_decode($response);
     }
 
-    public function getDatosMinaClientes()
-    {
-        $conectar = parent::conexion();
-        $sql = "CALL PruebasProyectos.proc_get_clientes()";
-        $sql = $conectar->prepare($sql);
-        $sql->execute();
-        return $sql->fetchAll(PDO::FETCH_ASSOC);
-    }
 
     public function insertRefinanciamiento($jsonBody)
     {
