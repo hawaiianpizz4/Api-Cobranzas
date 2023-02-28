@@ -113,7 +113,6 @@ class Verificacion extends Conectar
 
         // echo $number;
         return;
-
         $urlParams = array(
             'username' => getenv('SMS_USERNAME'),
             'mensajeid' => getenv('SMS_MSGID'),

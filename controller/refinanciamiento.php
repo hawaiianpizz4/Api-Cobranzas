@@ -36,14 +36,14 @@ $jsonBody = json_decode(file_get_contents("php://input"));
 
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: GET, POST, PUT');
-    header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-    header('Content-Type: application/json');
-    http_response_code(200);
-    exit;
-}
+// if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+//     header('Access-Control-Allow-Origin: *');
+//     header('Access-Control-Allow-Methods: GET, POST, PUT');
+//     header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+//     header('Content-Type: application/json');
+//     http_response_code(200);
+//     exit;
+// }
 
 
 

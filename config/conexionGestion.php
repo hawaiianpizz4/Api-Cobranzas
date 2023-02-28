@@ -12,14 +12,14 @@ class Conectar
 
         try {
             $conectar = $this->dbh = new PDO($databaseDns, $databaseUser, $databasePass);
-            $this->setNames();
+            $this->set_names();
             return $conectar;
         } catch (Exception $e) {
             print "!Error BD ICESA! : " . $e->getMessage() . "<br/>";
             die();
         }
     }
-    public function setNames()
+    public function set_names()
     {
         return $this->dbh->query("Set Names 'utf8'");
     }
