@@ -48,7 +48,7 @@ class Utils
         $imageGUID = $this->getGUID();
         $rutas = array();
         $intentos = 0;
-        while (true || $intentos <= 3) {
+        while ($intentos <= 3) {
             try {
                 $intentos++;
                 if (!file_exists($ruta_imagenes)) {

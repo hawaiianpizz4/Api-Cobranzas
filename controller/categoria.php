@@ -78,7 +78,6 @@ switch ($_GET["op"]) {
             $newValuesInsert[5], $newValuesInsert[8], $newValuesInsert[9], $newValuesInsert[10], $newValuesInsert[10], $newValuesInsert[4],
             $newValuesInsert[6], $newValuesInsert[7]
         );
-
         if (!empty($enviar)) {
             http_response_code(200);
             echo json_encode($enviar);
@@ -86,13 +85,9 @@ switch ($_GET["op"]) {
             http_response_code(400);
             echo "REGISTRO NO INGRESADO";
         }
-
-        echo json_encode("Realizado");
         break;
     case 'historial':
         $historial = $categoria->historialXusuario($_GET["nombre"]);
-
-
         if (!empty($historial)) {
             http_response_code(200);
             echo json_encode($historial);
@@ -100,9 +95,6 @@ switch ($_GET["op"]) {
             http_response_code(400);
             echo "REGISTROS NO ENCONTRADOS";
         }
-
-
-
         break;
 }
 ?>
