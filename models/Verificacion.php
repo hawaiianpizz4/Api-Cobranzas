@@ -23,8 +23,8 @@ class Verificacion extends Conectar
     public function getClientesParaVerificar($nombreGestor)
     {
         $conectar = parent::conexion();
-        // $sql = "SELECT * FROM verificaciones_usuarios_tb_pruebas WHERE estado=1 AND verificado=0 AND nombreGestor = '$nombreGestor'";
-        $sql = "SELECT * FROM verificaciones_usuarios_tb_pruebas WHERE estado=1 AND verificado=0";
+        $sql = "SELECT * FROM verificaciones_usuarios_tb_pruebas WHERE estado=1 AND verificado=0 AND nombre_gestor = '$nombreGestor'";
+        // $sql = "SELECT * FROM verificaciones_usuarios_tb_pruebas WHERE estado=1 AND verificado=0";
         $sql = $conectar->prepare($sql);
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_OBJ);
@@ -52,8 +52,9 @@ class Verificacion extends Conectar
     public function setClienteReservado($cedula, $nombreGestor)
     {
         $conectar = parent::conexion();
-        // $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET estado='1', nombre_gestor='$nombreGestor' WHERE vf_cedula_cliente='$cedula'";
-        $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET estado='1' WHERE vf_cedula_cliente='$cedula'";
+        $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET estado='1', nombre_gestor='$nombreGestor' WHERE vf_cedula_cliente='$cedula'";
+        // echo $sql;
+        // $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET estado='1' WHERE vf_cedula_cliente='$cedula'";
         $sql = $conectar->prepare($sql);
         $sql->execute();
 
@@ -79,13 +80,7 @@ class Verificacion extends Conectar
             $jsonBody->nombreCliente
         );
 
-
-
-        $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET verificado='1' WHERE vf_cedula_cliente= $jsonBody->cedulaCliente";
-        $sql = $conectar->prepare($sql);
-        $sql->execute();
-
-        $sql = "CALL proc_insert_checklist_verifica_domicilio_app (
+        $sql = "CALL proc_insert_checklist_verificacion_app (
             ?,?,?,?,?,?,?,?,?,?,
             ?,?,?,?,?,?,?,?,?,?,
             ?,?,?,?,?,?,?,?,?,?,

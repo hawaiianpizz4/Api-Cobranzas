@@ -47,18 +47,30 @@ class Utils
     {
         $imageGUID = $this->getGUID();
         $rutas = array();
+        $intentos = 0;
+        while (true || $intentos <= 3) {
+            try {
+                $intentos++;
+                if (!file_exists($ruta_imagenes)) {
+                    mkdir($ruta_imagenes, true);
+                }
 
-        if (!file_exists($ruta_imagenes)) {
-            mkdir($ruta_imagenes, 0777, true);
-        }
+                $i = 1;
+                foreach ($p_imagesArray as $blob) {
 
-        $i = 1;
-        foreach ($p_imagesArray as $blob) {
+                    $filename = $this->buildPath($ruta_imagenes, "$imageName - $imageGUID - $i.png");
+                    // echo $filename;
+                    file_put_contents($filename, base64_decode($blob));
+                    array_push($rutas, $filename);
+                    $i++;
+                }
+                break;
+            } catch (Exception $e) {
+                if (!file_exists($ruta_imagenes)) {
+                    mkdir($ruta_imagenes, true);
+                }
 
-            $filename = $this->buildPath($ruta_imagenes, "$imageName - $imageGUID - $i.png");
-            file_put_contents($filename, base64_decode($blob));
-            array_push($rutas, $filename);
-            $i++;
+            }
         }
 
         $concatPaths = $this->ConcatPaths($rutas, $ruta_imagenes, $ruta_web_imagenes);
@@ -81,7 +93,7 @@ class Utils
 
     public function exportImagesFromParams($dbParams, $imageName, $proceso, $subFolder)
     {
-
+        $subFolder = trim($subFolder);
         $ruta_imagenes = $this->buildPath(getenv('RUTA_IMAGENES'), $proceso, $subFolder);
         $ruta_web_imagenes = implode('/', [getenv('RUTA_WEB_IMAGENES'), $proceso, $subFolder]);
 
