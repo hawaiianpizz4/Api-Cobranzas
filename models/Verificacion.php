@@ -107,7 +107,7 @@ class Verificacion extends Conectar
         // $number = "593969838598";
 
         // echo $number;
-        return;
+        // return;
         $urlParams = array(
             'username' => getenv('SMS_USERNAME'),
             'mensajeid' => getenv('SMS_MSGID'),

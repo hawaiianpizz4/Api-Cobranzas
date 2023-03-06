@@ -11,6 +11,7 @@ CREATE TABLE actualizacion_datos_refinanciamiento_app_tb (
     refi_autorizacion_original varchar(100) DEFAULT NULL,
     refi_plazo varchar(100) DEFAULT NULL,
     refi_valor_cuota varchar(100) DEFAULT NULL,
+    refi_fecha_primer_pago varchar(100) DEFAULT NULL,
     refi_pago_gastos_admin varchar(100) DEFAULT NULL,
     refi_total_reest varchar(100) DEFAULT NULL,
     refi_total_pagar varchar(100) DEFAULT NULL,
@@ -79,7 +80,7 @@ CREATE TABLE actualizacion_datos_refinanciamiento_app_tb (
 );
 
 
-CREATE PROCEDURE proc_insert_actualizacion_datos_refinanciamiento_app(
+CREATE PROCEDURE proc_insert_refinanciamiento_app(
     IN p_refi_usuario varchar(100),
     IN p_refi_fecha varchar(100),
     IN p_refi_operacion varchar(100),
@@ -87,6 +88,7 @@ CREATE PROCEDURE proc_insert_actualizacion_datos_refinanciamiento_app(
     IN p_refi_autorizacion_original varchar(100),
     IN p_refi_plazo varchar(100),
     IN p_refi_valor_cuota varchar(100),
+    IN p_refi_fecha_primer_pago varchar(100),
     IN p_refi_pago_gastos_admin varchar(100),
     IN p_refi_total_reest varchar(100),
     IN p_refi_total_pagar varchar(100),
@@ -162,6 +164,7 @@ BEGIN
         refi_autorizacion_original,
         refi_plazo,
         refi_valor_cuota,
+        refi_fecha_primer_pago,
         refi_pago_gastos_admin,
         refi_total_reest,
         refi_total_pagar,
@@ -237,6 +240,7 @@ BEGIN
         p_refi_autorizacion_original,
         p_refi_plazo,
         p_refi_valor_cuota,
+        p_refi_fecha_primer_pago,
         p_refi_pago_gastos_admin,
         p_refi_total_reest,
         p_refi_total_pagar,
