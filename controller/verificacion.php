@@ -32,15 +32,6 @@ $msgBadRequest = "BAD REQUEST";
 
 $jsonBody = json_decode(file_get_contents("php://input"));
 
-// if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-//     header('Access-Control-Allow-Origin: *');
-//     header('Access-Control-Allow-Methods: GET, POST, PUT');
-//     header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-//     header('Content-Type: application/json');
-//     http_response_code(200);
-//     exit;
-// }
-
 if (!isset($_GET['opcion'])) {
     $utils->returnMessage(400, $msgBadRequest, null);
     return;
@@ -64,7 +55,7 @@ function postHandler()
     switch ($_GET["opcion"]) {
 
         case 'setClienteReservado':
-            $returnedData = $verificacion->setClienteReservado($_GET["cedula"], $_GET["nombreGestor"]);
+            $returnedData = $verificacion->setClienteReservado($_GET["cedula"], $_GET["nombreGestor"], $_GET["longitud"], $_GET["latitud"]);
             break;
         case 'setClienteVerificado':
             $returnedData = setClienteVerificado();

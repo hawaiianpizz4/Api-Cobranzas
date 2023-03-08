@@ -11,8 +11,11 @@ class Conectar
         $databasePass = getenv('DATABASE_PASSWORD');
 
         try {
+
+
             $conectar = $this->dbh = new PDO($databaseDns, $databaseUser, $databasePass);
-            $this->setNames();
+            $conectar->exec("SET NAMES utf8");
+
             return $conectar;
         } catch (Exception $e) {
             echo "!Error de conexión ! : " . $e->getMessage();
@@ -21,7 +24,7 @@ class Conectar
     }
     public function setNames()
     {
-        return $this->dbh->query("Set Names 'utf8'");
+        return $this->dbh->query("Set Names 'utf8mb4'");
     }
 }
 ?>

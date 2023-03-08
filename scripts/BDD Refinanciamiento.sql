@@ -2,7 +2,7 @@
 USE ventaspdv_verificaciones;
 
 
-CREATE TABLE actualizacion_datos_refinanciamiento_app_tb (
+CREATE TABLE datos_refinanciamiento_app_tb (
     id int NOT NULL AUTO_INCREMENT,
     refi_usuario varchar(100) DEFAULT NULL,
     refi_fecha varchar(100) DEFAULT NULL,
@@ -154,7 +154,7 @@ CREATE PROCEDURE proc_insert_refinanciamiento_app(
     IN p_imagen_path varchar(1000)
 )
 BEGIN
-    INSERT INTO actualizacion_datos_refinanciamiento_app_tb 
+    INSERT INTO datos_refinanciamiento_app_tb 
     (
         id,
         refi_usuario,
@@ -307,13 +307,13 @@ BEGIN
         CURRENT_TIMESTAMP()
     );
 
-    select * from actualizacion_datos_refinanciamiento_app_tb where id = LAST_INSERT_ID();
+    select * from datos_refinanciamiento_app_tb where id = LAST_INSERT_ID();
 END;
 
 
 CREATE PROCEDURE get_historial_usuario(p_usuario_nombre varchar(100))
 BEGIN
-  SELECT * FROM actualizacion_datos_refinanciamiento_app_tb WHERE refi_usuario = p_usuario_nombre;
+  SELECT * FROM datos_refinanciamiento_app_tb WHERE refi_usuario = p_usuario_nombre;
 END
 
 

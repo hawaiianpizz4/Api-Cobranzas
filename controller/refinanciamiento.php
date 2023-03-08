@@ -89,6 +89,9 @@ function getHandler()
         case 'getHistorial':
             $returnedData = $refinanciamiento->getHistorialUsuario($_GET["nombre"]);
             break;
+        case 'getRefinanciamiento':
+            $returnedData = $refinanciamiento->getRefinanciamiento($_GET["operacion"]);
+            break;
         default:
             $utils->returnMessage(400, $msgBadRequest, null);
             return;

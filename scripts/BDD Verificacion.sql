@@ -111,7 +111,7 @@ BEGIN
     interiorDomicilioImagen,
     latitud,
     longitud,
-    -- coordenadas,
+    coordenadas,
     vf_nombre_tienda,
     nombreGestor,
     fechaverificacion
@@ -149,13 +149,14 @@ BEGIN
     p_interiorDomicilioImagen,
     p_latitud,
     p_longitud,
-    -- ST_GeomFromText(CONCAT('POINT(', p_latitud, ' ', p_longitud, ')')),
+    POINT(p_latitud, p_longitud),
     p_vf_nombre_tienda,
     p_nombreGestor,
     CURRENT_TIMESTAMP()
   );
 
-  UPDATE verificaciones_usuarios_tb_pruebas SET verificado = '1', nombre_gestor=p_nombreGestor WHERE vf_cedula_cliente=p_cedulaCliente;
+  UPDATE verificaciones_usuarios_tb_pruebas SET verificado = '1', nombre_gestor=p_nombreGestor, codigo_verificacion=p_codigoVerificacion 
+  WHERE vf_cedula_cliente=p_cedulaCliente;
   SELECT * FROM checklist_verifica_domicilio_app_tb WHERE id = LAST_INSERT_ID();
 
 END;

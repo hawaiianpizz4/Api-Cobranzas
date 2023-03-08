@@ -13,17 +13,22 @@ class Verificacion extends Conectar
     public function getClientesParaReservar()
     {
         $conectar = parent::conexion();
-
-        $sql = "SELECT * FROM verificaciones_usuarios_tb_pruebas WHERE estado=0 AND verificado=0";
+        $sql = "SELECT vf_nombre_cliente, vf_lugar_a_verificar, dndlD_direccion_domiciliaria, dndlN_direccion_trabajo, vf_nombre_tienda, ";
+        $sql = $sql . "dndlN_telefonocelular, vf_cedula_cliente, estado, latitud, longitud FROM verificaciones_usuarios_tb_pruebas WHERE estado=0 AND verificado=0";
         $sql = $conectar->prepare($sql);
         $sql->execute();
-        return $sql->fetchAll(PDO::FETCH_OBJ);
+
+        $sql = $sql->fetchAll(PDO::FETCH_OBJ);
+
+        return $sql;
     }
 
     public function getClientesParaVerificar($nombreGestor)
     {
         $conectar = parent::conexion();
-        $sql = "SELECT * FROM verificaciones_usuarios_tb_pruebas WHERE estado=1 AND verificado=0 AND nombre_gestor = '$nombreGestor'";
+        $sql = "SELECT vf_nombre_cliente, vf_lugar_a_verificar, dndlD_direccion_domiciliaria, dndlN_direccion_trabajo, vf_nombre_tienda, ";
+        $sql = $sql . "dndlN_telefonocelular, vf_cedula_cliente, estado, fechaIngreso_reserva, latitud, longitud FROM verificaciones_usuarios_tb_pruebas WHERE estado=1 AND verificado=0 AND nombre_gestor = '$nombreGestor' ";
+        $sql = $sql . "order by fechaIngreso_reserva asc";
         // $sql = "SELECT * FROM verificaciones_usuarios_tb_pruebas WHERE estado=1 AND verificado=0";
         $sql = $conectar->prepare($sql);
         $sql->execute();
@@ -49,12 +54,19 @@ class Verificacion extends Conectar
         return $sql->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function setClienteReservado($cedula, $nombreGestor)
+    public function setClienteReservado($cedula, $nombreGestor, $latitud, $longitud)
     {
+        $longitud = (float) $longitud;
+        $latitud = (float) $latitud;
+
+
+
+        $nombreGestor = trim($nombreGestor);
+        // echo $nombreGestor;
         $conectar = parent::conexion();
-        $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET estado='1', nombre_gestor='$nombreGestor' WHERE vf_cedula_cliente='$cedula'";
-        // echo $sql;
-        // $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET estado='1' WHERE vf_cedula_cliente='$cedula'";
+        $sql = "UPDATE verificaciones_usuarios_tb_pruebas SET estado='1', nombre_gestor='$nombreGestor', latitud_reserva_gestor=$latitud, ";
+        $sql = $sql . "longitud_reserva_gestor=$longitud, coordenas_reserva_gestor = POINT($latitud, $longitud), fechaIngreso_reserva = CURRENT_TIMESTAMP() ";
+        $sql = $sql . "WHERE vf_cedula_cliente='$cedula'";
         $sql = $conectar->prepare($sql);
         $sql->execute();
 
@@ -91,7 +103,7 @@ class Verificacion extends Conectar
 
         $i = 1;
         foreach ($dbParams as $key => $value) {
-            $sql->bindValue($i++, $value);
+            $sql->bindValue($i++, strtoupper($value));
         }
 
         $sql->execute();
@@ -107,7 +119,7 @@ class Verificacion extends Conectar
         // $number = "593969838598";
 
         // echo $number;
-        // return;
+        return;
         $urlParams = array(
             'username' => getenv('SMS_USERNAME'),
             'mensajeid' => getenv('SMS_MSGID'),
