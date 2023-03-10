@@ -38,8 +38,44 @@ class Verificacion extends Conectar
     public function getClientesVerificados($nombreGestor)
     {
         $conectar = parent::conexion();
-        $sql = "SELECT * FROM checklist_verifica_domicilio_app_tb WHERE nombreGestor = '$nombreGestor'";
-        // $sql = "SELECT * FROM checklist_verifica_domicilio_app_tb";
+        $sql = "SELECT 
+                    id,
+                    cedulaCliente,
+                    nombreCliente,
+                    codigoVerificacion,
+                    direccionDomiciliaria,
+                    tipoVivienda,
+                    personaQuienRealizaLaVerificacion,
+                    residenciaMinimaTresMeses,
+                    localTerrenoPropio,
+                    localTerrenoArrendado,
+                    planillaServicioBasico,
+                    planillaServicioBasicoImagen,
+                    seguridadPuertasVentanas,
+                    muebleriaBasica,
+                    materialCasa,
+                    periodicidadActividadesLaborales,
+                    confirmacionInfoVecinos,
+                    nombreInfoVecino,
+                    celularInfoVecino,
+                    estabilidadLaboraSeisMesesImagen,
+                    facturasProveedoresUltimosTresMesesImagen,
+                    fachadaDelNegocioImagen,
+                    interiorDelNegocioImagen,
+                    clienteDentroDelNegocioImagen,
+                    clienteFueraDelNegocioImagen,
+                    tituloPropiedaGaranteOCodeudorImagen,
+                    impuestoPredialImagen,
+                    respaldoIngresosImagen,
+                    certificadoLaboralImagen,
+                    interiorDomicilioImagen,
+                    latitud,
+                    longitud,
+                    vf_nombre_tienda,
+                    nombreGestor,
+                    fechaverificacion
+                FROM checklist_verifica_domicilio_app_tb;
+                WHERE nombreGestor = '$nombreGestor'";
         $sql = $conectar->prepare($sql);
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_OBJ);
