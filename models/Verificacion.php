@@ -38,7 +38,7 @@ class Verificacion extends Conectar
     public function getClientesVerificados($nombreGestor)
     {
         $conectar = parent::conexion();
-        $sql = "SELECT 
+        $sql = "SELECT
                     id,
                     cedulaCliente,
                     nombreCliente,
@@ -75,7 +75,7 @@ class Verificacion extends Conectar
                     nombreGestor,
                     fechaverificacion
                 FROM checklist_verifica_domicilio_app_tb;
-                WHERE nombreGestor = '$nombreGestor'";
+                WHERE nombreGestor = '$nombreGestor' order by id desc ";
         $sql = $conectar->prepare($sql);
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_OBJ);
@@ -155,7 +155,7 @@ class Verificacion extends Conectar
         // $number = "593969838598";
 
         // echo $number;
-        return;
+        // return;
         $urlParams = array(
             'username' => getenv('SMS_USERNAME'),
             'mensajeid' => getenv('SMS_MSGID'),
